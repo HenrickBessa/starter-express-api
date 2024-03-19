@@ -1,34 +1,18 @@
 import express from 'express';
-import bodyParser from 'body-parser';
-import firebase from 'firebase-admin';
-import serviceAccount from './credentials.json' assert { type: 'json' };
+import cors from 'cors';
 import dotenv from 'dotenv';
+import { sendMessage, formClient } from './src/controller/messageController.js';
+
 dotenv.config();
-
-const PORT = process.env.PORT;
 const app = express();
-app.use(bodyParser.json());
+const port = process.env.PORT || 3001;
 
-const firebaseConfig = {
-  credential: firebase.credential.cert(serviceAccount),
-  databaseURL: 'https://tabelasapp-4a190-default-rtdb.firebaseio.com'
-};
+app.use(cors());
+app.use(express.json());
 
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-export default { database }
+app.post('/api/send-message', sendMessage);
+app.post('/api/form-client', formClient);
 
-
-import usuarioRoutes from './src/routes/usuario.route.js';
-// import livroRoutes from './src/routes/livroRoutes.js';
-// import generoRoutes from './src/routes/generoRoutes.js';
-
-
-app.use('/usuarios',usuarioRoutes);
-// app.use('/livros', livroRoutes);
-// app.use('/generos', generoRoutes);
-
-
-app.listen(PORT, () => {
-  console.log('Servidor rodando na porta ' + PORT);
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
 });
