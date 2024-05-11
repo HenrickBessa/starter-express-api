@@ -1,4 +1,4 @@
-import Client from '../connection/twilioClient.js';
+import Client from "../connection/twilioClient.js";
 
 const number = process.env.NUMBER_FIXED;
 
@@ -14,15 +14,15 @@ async function sendMessage(req, res) {
     console.log(`Message SID: ${message.sid}`);
     res.status(200).json({
       success: true,
-      message: 'Mensagem enviada com sucesso!',
-      sid: message.sid
+      message: "Message sent successfully!",
+      sid: message.sid,
     });
   } catch (err) {
     console.error(`Sending Message Failed: ${err.message}`);
     res.status(500).json({
       success: false,
-      error: 'Falha ao enviar mensagem',
-      details: err.message
+      error: "Failed to send message",
+      details: err.message,
     });
   }
 }
@@ -30,7 +30,7 @@ async function sendMessage(req, res) {
 async function formClient(req, res) {
   const { name, email, phone } = req.body;
   let { message } = req.body;
-  message = message.trim() ? message : '---';
+  message = message.trim() ? message : "---";
 
   try {
     const sentMessage = await Client.messages.create({
@@ -41,15 +41,15 @@ async function formClient(req, res) {
     console.log(`Message SID: ${sentMessage.sid}`);
     res.status(200).json({
       success: true,
-      message: 'Mensagem enviada com sucesso!',
-      sid: sentMessage.sid
+      message: "Message sent successfully!",
+      sid: sentMessage.sid,
     });
   } catch (err) {
     console.error(`Sending Message Failed: ${err.message}`);
     res.status(500).json({
       success: false,
-      error: 'Falha ao enviar mensagem',
-      details: err.message
+      error: "Failed to send message",
+      details: err.message,
     });
   }
 }
